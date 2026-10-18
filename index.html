@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="tr" class="scroll-smooth" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tarık Tunç — Yazılım Mühendisliği ve Ürün Vitrini</title>
+  <meta name="description" content="Tarık Tunç kişisel mühendislik vitrini. Yüksek performanslı masaüstü sistemleri, WCAG 2.2 AA erişilebilirlik mimarisi ve uyumluluk yazılımları.">
+  
+  <!-- Favicon / Logo -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230f172a'><polygon points='12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2'/></svg>">
+  
+  <!-- Fontlar: Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', '-apple-system', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
+          },
+          colors: {
+            ink: {
+              50: '#f8fafc',
+              100: '#f1f5f9',
+              200: '#e2e8f0',
+              300: '#cbd5e1',
+              400: '#94a3b8',
+              500: '#64748b',
+              600: '#475569',
+              700: '#334155',
+              800: '#1e293b',
+              900: '#0f172a',
+              950: '#06080d',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --bg-subtle: #f8fafc;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --card-bg: #ffffff;
+      --card-border: #e2e8f0;
+      --card-hover-border: #0f172a;
+      --tag-bg: #f1f5f9;
+      --tag-text: #0f172a;
+    }
+    html.dark {
+      --bg: #07090e;
+      --bg-subtle: #0d111a;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --border: #1e2638;
+      --card-bg: #0d111a;
+      --card-border: #1e2638;
+      --card-hover-border: #f8fafc;
+      --tag-bg: #161c2b;
+      --tag-text: #f1f5f9;
+    }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      transition: background-color 0.25s ease, color 0.25s ease;
+      font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-slate-900 selection:text-white dark:selection:bg-slate-100 dark:selection:text-slate-900">
+
+  <!-- Üst Menü (Navbar) -->
+  <header class="sticky top-0 z-50 backdrop-blur-md bg-white/85 dark:bg-ink-950/85 border-b border-ink-200 dark:border-ink-800 transition-colors">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      
+      <!-- Logo & İsim -->
+      <a href="#" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-xl bg-ink-900 dark:bg-white flex items-center justify-center text-white dark:text-ink-900 shadow-sm transition-transform group-hover:scale-105">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+          </svg>
+        </div>
+        <div class="flex flex-col">
+          <span class="text-lg font-bold tracking-tight text-ink-900 dark:text-white">Tarık Tunç</span>
+          <span class="text-[11px] text-ink-500 dark:text-ink-400 font-mono">Systems & Desktop</span>
+        </div>
+      </a>
+
+      <!-- Menü Linkleri -->
+      <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-ink-600 dark:text-ink-300">
+        <a href="#urunler" class="hover:text-ink-900 dark:hover:text-white transition-colors">Ürünler</a>
+        <a href="#prensipler" class="hover:text-ink-900 dark:hover:text-white transition-colors">Prensipler</a>
+        <a href="#teknolojiler" class="hover:text-ink-900 dark:hover:text-white transition-colors">Teknolojiler</a>
+        <a href="#iletisim" class="hover:text-ink-900 dark:hover:text-white transition-colors">İletişim</a>
+      </nav>
+
+      <!-- Sağ Kontroller: Dark/Light Mode + GitHub -->
+      <div class="flex items-center gap-3">
+        
+        <!-- Tema Değiştirme Butonu -->
+        <button id="theme-toggle" aria-label="Temayı Değiştir" class="p-2.5 rounded-xl border border-ink-200 dark:border-ink-800 bg-ink-50 dark:bg-ink-900 text-ink-700 dark:text-ink-300 hover:text-ink-900 dark:hover:text-white transition-colors">
+          <!-- Ay İkonu (Light modda görünür) -->
+          <svg id="theme-icon-dark" class="w-4 h-4 hidden dark:inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+          </svg>
+          <!-- Güneş İkonu (Dark modda görünür) -->
+          <svg id="theme-icon-light" class="w-4 h-4 inline-block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+          </svg>
+        </button>
+
+        <a href="https://github.com/tariktunc" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-white bg-ink-900 hover:bg-ink-800 dark:bg-white dark:text-ink-900 dark:hover:bg-ink-100 rounded-xl transition-all shadow-sm">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+          </svg>
+          <span>GitHub</span>
+        </a>
+
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Hero Bölümü -->
+  <main class="flex-grow">
+    <section class="pt-16 pb-20 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto text-left">
+      
+      <!-- Durum Rozeti -->
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-ink-200 dark:border-ink-800 bg-ink-50 dark:bg-ink-900 text-xs font-mono text-ink-700 dark:text-ink-300 mb-8">
+        <span class="w-2 h-2 rounded-full bg-ink-900 dark:bg-white animate-pulse"></span>
+        <span>Yazılım Mühendisliği ve Ürün Mimarisi</span>
+      </div>
+
+      <!-- Ana Başlık -->
+      <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight leading-[1.12] mb-6 text-ink-900 dark:text-white">
+        Tarık Tunç
+      </h1>
+
+      <!-- Alt Açıklama -->
+      <p class="text-lg sm:text-xl text-ink-600 dark:text-ink-400 max-w-3xl leading-relaxed mb-10">
+        Yüksek performanslı masaüstü araçları (Electron, Rust, Swift), modern web bileşenleri ve uluslararası standartlara (WCAG 2.2 AA, EAA 2025, KVKK/GDPR) tam uyumlu bağımsız yazılımlar geliştiriyorum.
+      </p>
+
+      <!-- Hızlı Bağlantılar -->
+      <div class="flex flex-wrap items-center gap-4 text-xs font-semibold">
+        <a href="#urunler" class="px-5 py-3 rounded-xl bg-ink-900 text-white dark:bg-white dark:text-ink-900 hover:opacity-90 transition-opacity flex items-center gap-2">
+          <span>Ürünleri İncele</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </a>
+        <a href="mailto:info@blakfy.com" class="px-5 py-3 rounded-xl border border-ink-200 dark:border-ink-800 bg-ink-50 dark:bg-ink-900 text-ink-800 dark:text-ink-200 hover:border-ink-400 dark:hover:border-ink-600 transition-colors">
+          İletişim: info@blakfy.com
+        </a>
+      </div>
+
+    </section>
+
+    <!-- Ürünler ve Sistemler Portföyü -->
+    <section id="urunler" class="py-20 border-t border-ink-200 dark:border-ink-800 bg-ink-50/50 dark:bg-ink-900/30">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-4">
+          <div>
+            <span class="text-xs font-mono font-semibold uppercase tracking-widest text-ink-500 dark:text-ink-400">Ürün Portföyü</span>
+            <h2 class="text-3xl font-extrabold text-ink-900 dark:text-white mt-1">Geliştirilen Yazılım ve Sistemler</h2>
+          </div>
+          <p class="text-xs text-ink-500 dark:text-ink-400 max-w-sm">Tüm ürünler çevrimdışı öncelikli, sıfır telemetri ve yüksek performans standartlarıyla inşa edilmiştir.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          
+          <!-- Ürün 1: Polaris -->
+          <div class="bg-white dark:bg-ink-900 rounded-2xl p-7 border border-ink-200 dark:border-ink-800 hover:border-ink-900 dark:hover:border-white transition-all flex flex-col justify-between group shadow-sm">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="text-xs font-mono px-2.5 py-1 rounded-md bg-ink-100 dark:bg-ink-800 text-ink-800 dark:text-ink-200 font-semibold">Masaüstü Uygulaması</span>
+                <span class="text-xs text-ink-400 font-mono">v0.1.0-beta</span>
+              </div>
+              <h3 class="text-xl font-bold text-ink-900 dark:text-white mb-2 group-hover:underline">Polaris</h3>
+              <p class="text-xs text-ink-600 dark:text-ink-400 leading-relaxed mb-6">
+                Akıllı ekran kaydı ve video kurgu stüdyosu. Otomatik tıklama zoom'u, 120 Hz imleç yumuşatma, dinamik kamera balonu ve kayıpsız WASAPI çift kanal ses senkronu. %100 yerel ve gizlilik odaklı.
+              </p>
+              <div class="flex flex-wrap gap-1.5 mb-6">
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-ink-100 dark:bg-ink-800 text-ink-700 dark:text-ink-300">TypeScript</span>
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-ink-100 dark:bg-ink-800 text-ink-700 dark:text-ink-300">Electron</span>
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-ink-100 dark:bg-ink-800 text-ink-700 dark:text-ink-300">Rust</span>
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-ink-100 dark:bg-ink-800 text-ink-700 dark:text-ink-300">Swift</span>
+              </div>
+            </div>
+            <div class="pt-4 border-t border-ink-100 dark:border-ink-800 flex items-center justify-between text-xs font-bold">
+              <a href="https://tariktunc.github.io/polaris-app/" class="text-ink-900 dark:text-white underline hover:opacity-80">Canlı İndirme Portalı</a>
+              <a href="https://github.com/tariktunc/polaris-app" target="_blank" rel="noopener noreferrer" class="text-ink-500 hover:text-ink-900 dark:hover:text-white">GitHub</a>
+            </div>
+          </div>
+
+          <!-- Ürün 2: Accessibility Widget -->
+          <div class="bg-white dark:bg-ink-900 rounded-2xl p-7 border border-ink-200 dark:border-ink-800 hover:border-ink-900 dark:hover:border-white transition-all flex flex-col justify-between group shadow-sm">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="text-xs font-mono px-2.5 py-1 rounded-md bg-ink-100 dark:bg-ink-800 text-ink-800 dark:text-ink-200 font-semibold">Web Bileşeni / A11y</span>
+                <span class="text-xs text-ink-400 font-mono">v2.0.0-alpha</span>
+              </div>
+              <h3 class="text-xl font-bold text-ink-900 dark:text-white mb-2 group-hover:underline">Accessibility Widget</h3>
+              <p class="text-xs text-ink-600 dark:text-ink-400 leading-relaxed mb-6">
+                WCAG 2.2 AA ve EAA 2025 uyumlu yerel kullanıcı tercih paneli. Sahte kaplama (overlay) içermez; 7 erişilebilirlik tercihi, 9 dil, sıfır telemetri ve işletim sistemi sinyallerine tam uyum.
+              </p>
+              <div class="flex flex-wrap gap-1.5 mb-6">
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-ink-100 dark:bg-ink-800 text-ink-700 dark:text-ink-300">Preact</span>
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-ink-100 dark:bg-ink-800 text-ink-700 dark:text-ink-300">Web Components</span>
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-ink-100 dark:bg-ink-800 text-ink-700 dark:text-ink-300">Shadow DOM</span>
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-ink-100 dark:bg-ink-800 text-ink-700 dark:text-ink-300">WCAG 2.2 AA</span>
+              </div>
+            </div>
+            <div class="pt-4 border-t border-ink-100 dark:border-ink-800 flex items-center justify-between text-xs font-bold">
+              <a href="https://tariktunc.github.io/accessibility-widget/" class="text-ink-900 dark:text-white underline hover:opacity-80">Canlı Tanıtım & Demo</a>
+              <a href="https://github.com/tariktunc/accessibility-widget" target="_blank" rel="noopener noreferrer" class="text-ink-500 hover:text-ink-900 dark:hover:text-white">GitHub</a>
+            </div>
+          </div>
+
+          <!-- Ürün 3: Blakfy Cookie Consent -->
+          <div class="bg-white dark:bg-ink-900 rounded-2xl p-7 border border-ink-200 dark:border-ink-800 hover:border-ink-900 dark:hover:border-white transition-all flex flex-col justify-between group shadow-sm">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="text-xs font-mono px-2.5 py-1 rounded-md bg-ink-100 dark:bg-ink-800 text-ink-800 dark:text-ink-200 font-semibold">Gizlilik & Regülasyon</span>
+                <span class="text-xs text-ink-400 font-mono">Vanilla JS</span>
+              </div>
+              <h3 class="text-xl font-bold text-ink-900 dark:text-white mb-2 group-hover:underline">Blakfy Cookie Consent</h3>
+              <p class="text-xs text-ink-600 dark:text-ink-400 leading-relaxed mb-6">
+                KVKK, GDPR ve CCPA regülasyonlarına tam uyumlu, sıfır bağımlılıklı çerez onay çözümü. 23 dil desteği, 18 hazır stil şablonu ve otomatik script/iframe engelleme (tag-gating).
+              </p>
+              <div class="flex flex-wrap gap-1.5 mb-6">
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-ink-100 dark:bg-ink-800 text-ink-700 dark:text-ink-300">Vanilla JS</span>
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-ink-100 dark:bg-ink-800 text-ink-700 dark:text-ink-300">CSS Variables</span>
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-ink-100 dark:bg-ink-800 text-ink-700 dark:text-ink-300">Tag-Gating</span>
+              </div>
+            </div>
+            <div class="pt-4 border-t border-ink-100 dark:border-ink-800 flex items-center justify-between text-xs font-bold">
+              <a href="https://github.com/tariktunc/blakfy-cookie" target="_blank" rel="noopener noreferrer" class="text-ink-900 dark:text-white underline hover:opacity-80">Doküman & Kodlar</a>
+              <span class="text-ink-400 font-normal">Sıfır Bağımlılık</span>
+            </div>
+          </div>
+
+          <!-- Ürün 4: NexusDeck -->
+          <div class="bg-white dark:bg-ink-900 rounded-2xl p-7 border border-ink-200 dark:border-ink-800 hover:border-ink-900 dark:hover:border-white transition-all flex flex-col justify-between group shadow-sm">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="text-xs font-mono px-2.5 py-1 rounded-md bg-ink-100 dark:bg-ink-800 text-ink-800 dark:text-ink-200 font-semibold">Masaüstü Üretkenlik</span>
+                <span class="text-xs text-ink-400 font-mono">Rust & Win32</span>
+              </div>
+              <h3 class="text-xl font-bold text-ink-900 dark:text-white mb-2 group-hover:underline">NexusDeck</h3>
+              <p class="text-xs text-ink-600 dark:text-ink-400 leading-relaxed mb-6">
+                Masaüstü iş akışı ve üretkenlik yönetim merkezi. Arka planda sessiz otomatik güncelleme altyapısı ve Ed25519 kriptografik imza doğrulama desteği.
+              </p>
+              <div class="flex flex-wrap gap-1.5 mb-6">
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-ink-100 dark:bg-ink-800 text-ink-700 dark:text-ink-300">Rust</span>
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-ink-100 dark:bg-ink-800 text-ink-700 dark:text-ink-300">Win32 API</span>
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-ink-100 dark:bg-ink-800 text-ink-700 dark:text-ink-300">Ed25519</span>
+              </div>
+            </div>
+            <div class="pt-4 border-t border-ink-100 dark:border-ink-800 flex items-center justify-between text-xs font-bold">
+              <a href="https://github.com/tariktunc/nexusdeck-releases/releases/latest" target="_blank" rel="noopener noreferrer" class="text-ink-900 dark:text-white underline hover:opacity-80">En Son Sürümler</a>
+              <a href="https://github.com/tariktunc/nexusdeck-releases" target="_blank" rel="noopener noreferrer" class="text-ink-500 hover:text-ink-900 dark:hover:text-white">Sürüm Reposu</a>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Mühendislik Yaklaşımı ve Prensipler -->
+    <section id="prensipler" class="py-20 border-t border-ink-200 dark:border-ink-800 bg-white dark:bg-ink-950">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-left mb-12">
+          <span class="text-xs font-mono font-semibold uppercase tracking-widest text-ink-500 dark:text-ink-400">İlkeler</span>
+          <h2 class="text-3xl font-extrabold text-ink-900 dark:text-white mt-1">Mühendislik Prensipleri</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          
+          <div class="p-6 rounded-2xl border border-ink-200 dark:border-ink-800 bg-ink-50 dark:bg-ink-900">
+            <h4 class="text-base font-bold text-ink-900 dark:text-white mb-2">Yerel ve Cihaz Üstü Önceliği</h4>
+            <p class="text-xs text-ink-600 dark:text-ink-400 leading-relaxed">
+              Kullanıcı verisini gereksiz yere bulut sunucularına aktarmayan, donanım kaynaklarını doğrudan ve verimli kullanan yerel mimariler.
+            </p>
+          </div>
+
+          <div class="p-6 rounded-2xl border border-ink-200 dark:border-ink-800 bg-ink-50 dark:bg-ink-900">
+            <h4 class="text-base font-bold text-ink-900 dark:text-white mb-2">Standartlara Mutlak Sadakat</h4>
+            <p class="text-xs text-ink-600 dark:text-ink-400 leading-relaxed">
+              Pazarlama vaatleri yerine W3C WCAG 2.2, EN 301 549 ve KVKK/GDPR gibi yasal ve teknik direktiflere harfiyen uyum.
+            </p>
+          </div>
+
+          <div class="p-6 rounded-2xl border border-ink-200 dark:border-ink-800 bg-ink-50 dark:bg-ink-900">
+            <h4 class="text-base font-bold text-ink-900 dark:text-white mb-2">Hibrit Güç: Web ve Native</h4>
+            <p class="text-xs text-ink-600 dark:text-ink-400 leading-relaxed">
+              Arayüzde modern web teknolojilerinin esnekliği; çekirdek yakalama, bellek yönetimi ve sistem fonksiyonlarında Rust ve Swift güvenliği.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Teknoloji Yığını -->
+    <section id="teknolojiler" class="py-16 border-t border-ink-200 dark:border-ink-800 bg-ink-50/50 dark:bg-ink-900/30">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-left mb-8">
+          <span class="text-xs font-mono font-semibold uppercase tracking-widest text-ink-500 dark:text-ink-400">Yığın</span>
+          <h3 class="text-xl font-bold text-ink-900 dark:text-white mt-1">Kullanılan Temel Teknolojiler</h3>
+        </div>
+
+        <div class="flex flex-wrap gap-2.5 text-xs font-mono">
+          <span class="px-3 py-1.5 rounded-lg border border-ink-200 dark:border-ink-800 bg-white dark:bg-ink-900 text-ink-800 dark:text-ink-200">TypeScript</span>
+          <span class="px-3 py-1.5 rounded-lg border border-ink-200 dark:border-ink-800 bg-white dark:bg-ink-900 text-ink-800 dark:text-ink-200">Rust (Cargo / Win32)</span>
+          <span class="px-3 py-1.5 rounded-lg border border-ink-200 dark:border-ink-800 bg-white dark:bg-ink-900 text-ink-800 dark:text-ink-200">Swift (ScreenCaptureKit)</span>
+          <span class="px-3 py-1.5 rounded-lg border border-ink-200 dark:border-ink-800 bg-white dark:bg-ink-900 text-ink-800 dark:text-ink-200">Electron</span>
+          <span class="px-3 py-1.5 rounded-lg border border-ink-200 dark:border-ink-800 bg-white dark:bg-ink-900 text-ink-800 dark:text-ink-200">Preact</span>
+          <span class="px-3 py-1.5 rounded-lg border border-ink-200 dark:border-ink-800 bg-white dark:bg-ink-900 text-ink-800 dark:text-ink-200">Web Components</span>
+          <span class="px-3 py-1.5 rounded-lg border border-ink-200 dark:border-ink-800 bg-white dark:bg-ink-900 text-ink-800 dark:text-ink-200">Shadow DOM</span>
+          <span class="px-3 py-1.5 rounded-lg border border-ink-200 dark:border-ink-800 bg-white dark:bg-ink-900 text-ink-800 dark:text-ink-200">FFmpeg</span>
+          <span class="px-3 py-1.5 rounded-lg border border-ink-200 dark:border-ink-800 bg-white dark:bg-ink-900 text-ink-800 dark:text-ink-200">WASAPI Loopback</span>
+          <span class="px-3 py-1.5 rounded-lg border border-ink-200 dark:border-ink-800 bg-white dark:bg-ink-900 text-ink-800 dark:text-ink-200">WCAG 2.2 Level AA</span>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Alt Bilgi (Footer) -->
+  <footer id="iletisim" class="border-t border-ink-200 dark:border-ink-800 bg-white dark:bg-ink-950 py-12 text-xs text-ink-500 dark:text-ink-400">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+      
+      <div class="flex items-center gap-3">
+        <div class="w-6 h-6 rounded-lg bg-ink-900 dark:bg-white text-white dark:text-ink-900 flex items-center justify-center font-bold text-xs">
+          T
+        </div>
+        <span class="text-ink-900 dark:text-white font-medium"><strong>Tarık Tunç</strong> — Sistem Mühendisliği</span>
+      </div>
+
+      <div class="flex items-center gap-6">
+        <a href="mailto:info@blakfy.com" class="hover:text-ink-900 dark:hover:text-white font-medium transition-colors">info@blakfy.com</a>
+        <a href="https://github.com/tariktunc" target="_blank" rel="noopener noreferrer" class="hover:text-ink-900 dark:hover:text-white font-medium transition-colors">GitHub: @tariktunc</a>
+        <a href="https://blakfy.com" target="_blank" rel="noopener noreferrer" class="hover:text-ink-900 dark:hover:text-white font-medium transition-colors">Blakfy Studio</a>
+      </div>
+
+      <div>
+        <span>Telif Hakkı &copy; 2026 Tarık Tunç. Tüm hakları saklıdır.</span>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- Dark / Light Mod Scripti -->
+  <script>
+    (function() {
+      const toggleBtn = document.getElementById('theme-toggle');
+      const root = document.documentElement;
+      
+      // Kullanıcının kayıtlı temasını veya sistem tercihini kontrol et
+      const savedTheme = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      
+      if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+        root.classList.add('dark');
+      } else {
+        root.classList.remove('dark');
+      }
+      
+      toggleBtn.addEventListener('click', function() {
+        const isDark = root.classList.toggle('dark');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      });
+    })();
+  </script>
+
+</body>
+</html>
